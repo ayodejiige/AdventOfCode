@@ -79,7 +79,8 @@ impl XmasSearch {
             GridSearchDirections::DownRight => return (row+distance, col+distance)
         }
     }
-    fn explore_cell(&self, row: usize, col: usize) -> u64 {
+
+    fn compute_xmas_occurrence_cell(&self, row: usize, col: usize) -> u64 {
         let mut xmas_count = 0;
         let search_array = vec!['X', 'M', 'A', 'S'];
         let search_directions = vec![
@@ -107,7 +108,7 @@ impl XmasSearch {
                 }
             }
 
-            if(found) {
+            if found {
                 xmas_count += 1;
             }
             
@@ -116,20 +117,62 @@ impl XmasSearch {
         xmas_count
     }
 
-    fn compute(&self) -> u64 {
+    fn compute_xmas_occurrence(&self) -> u64 {
         let mut xmas_count = 0;
 
         for row in 0..self.row_size {
             for col in 0..self.col_size {
-                xmas_count += self.explore_cell(row, col);
+                xmas_count += self.compute_xmas_occurrence_cell(row, col);
             }
         }
         xmas_count
     }
+
+    /// Check if the current cell is the center of a X-MAS.
+    fn is_x_mas_cell(&self, col: usize, row: usize) -> bool {
+        // If cell is at the edge of the grid, there are not enough surrounding cells
+        // to form a X. 
+        if col == 0 || row == 0 || col == self.col_size-1 || row == self.row_size-1 {
+            return false;
+        }
+
+        // If cell value is not 'A', it cannot be an X-MAS cell
+        if self.grid[row][col] != 'A' {
+            return false;
+        }
+
+        let top_left_char = self.grid[row-1][col-1];
+        let top_right_char = self.grid[row-1][col+1];
+        let bottom_left_char = self.grid[row+1][col-1];
+        let bottom_right_char = self.grid[row+1][col+1];
+
+        let right_diagonal_is_mas = (top_left_char == 'M' && bottom_right_char == 'S') 
+            || (top_left_char == 'S' && bottom_right_char == 'M');
+        let left_diagonal_is_mas = (top_right_char == 'M' && bottom_left_char == 'S')
+            || (top_right_char == 'S' && bottom_left_char == 'M');
+
+        right_diagonal_is_mas && left_diagonal_is_mas 
+    }
+
+    /// Compute number of x-mas occurrences i.e. parts in the grid
+    /// where two diagonal instances of MAS interserct. This center of the
+    /// X will be the letter 'A' and the edges 'M' or 'A'
+    fn compute_x_mas_occurrence(&self) -> u64 {
+        let mut x_mas_count = 0;
+        
+        for row in 0..self.row_size {
+            for col in 0..self.col_size {
+                if self.is_x_mas_cell(col, row) {
+                    x_mas_count += 1;
+                }
+            }
+        }
+        x_mas_count
+    }
+
 }
 
-
-fn ceres_search(file_path: String) -> u64 {
+pub fn main(file_path: String) {
     let grid = fs::read_to_string(file_path)
         .unwrap()
         .lines()
@@ -138,11 +181,9 @@ fn ceres_search(file_path: String) -> u64 {
     
     let xmas_search = XmasSearch::new(grid);
 
-    xmas_search.compute()
-}
-
-pub fn main(file_path: String) {
-    let ans = ceres_search(file_path);
-
+    let ans = xmas_search.compute_xmas_occurrence();
     println!("XMAS count: {ans}");
+
+    let ans = xmas_search.compute_x_mas_occurrence();
+    println!("X-MAS count: {ans}");
 }
