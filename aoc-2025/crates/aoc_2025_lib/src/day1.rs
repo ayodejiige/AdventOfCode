@@ -25,8 +25,8 @@ fn read_input_file(file_path: &String) -> Result<(Vec<i64>, Vec<i64>), &'static 
 
 pub fn main(file_path: String) {
     let (mut list_one, mut list_two) = read_input_file(&file_path).unwrap();
-    quick_sort(&mut list_one);
-    quick_sort(&mut list_two);
+    quick_sort(&mut list_one, |a, b| a.cmp(b));
+    quick_sort(&mut list_two, |a, b| a.cmp(b));
 
     let distance = calculate_distance(&list_one, &list_two).unwrap();
     let similarity = calculate_similarity(&list_one, &list_two).unwrap();

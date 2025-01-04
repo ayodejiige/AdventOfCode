@@ -1,10 +1,14 @@
-use std::collections::HashMap;
+use std::{cmp::Ordering, collections::HashMap};
 
-pub fn quick_sort(list: &mut Vec<i64>) {
-    quick_sort_recursive(list, 0, list.len() - 1);
+pub fn quick_sort<T, F>(list: &mut Vec<T>, compare: F) 
+where
+    T: PartialOrd + Copy,
+    F: Fn(&T, &T) -> Ordering,
+{
+    quick_sort_recursive(list, 0, list.len() - 1, &compare);
 
-    fn quick_sort_recursive(list: &mut Vec<i64>, low_idx: usize, high_idx: usize) {
-        fn swap(list: &mut Vec<i64>, idx_one: usize, idx_two: usize) {
+    fn quick_sort_recursive<T: Copy, F: Fn(&T, &T) -> Ordering>(list: &mut Vec<T>, low_idx: usize, high_idx: usize, compare: &F) {
+        fn swap<T: Copy>(list: &mut Vec<T>, idx_one: usize, idx_two: usize) {
             let temp = list[idx_one];
             list[idx_one] = list[idx_two];
             list[idx_two] = temp;
@@ -20,9 +24,11 @@ pub fn quick_sort(list: &mut Vec<i64>) {
         let mut right_idx = high_idx;
 
         while left_idx <= right_idx && right_idx > 0 {
-            if list[left_idx] <= pivot {
+            let left_compare = compare(&list[left_idx], &pivot);
+            let right_compare = compare(&list[right_idx], &pivot);
+            if left_compare.is_le() {
                 left_idx += 1;
-            } else if list[right_idx] >= pivot {
+            } else if right_compare.is_ge() {
                 right_idx -= 1;
             } else {
                 swap(list, left_idx, right_idx);
@@ -40,9 +46,9 @@ pub fn quick_sort(list: &mut Vec<i64>) {
         }
 
         if pivot_idx > 0 {
-            quick_sort_recursive(list, low_idx, pivot_idx - 1);
+            quick_sort_recursive(list, low_idx, pivot_idx - 1, compare);
         }
-        quick_sort_recursive(list, pivot_idx + 1, high_idx);
+        quick_sort_recursive(list, pivot_idx + 1, high_idx, compare);
     }
 }
 
@@ -92,7 +98,7 @@ mod tests {
 
         let mut list = (0..10000).map(|_| rng.sample(&range)).collect::<Vec<i64>>();
         let mut list_copy = list.clone();
-        quick_sort(&mut list_copy);
+        quick_sort(&mut list_copy, |a, b| a.cmp(b));
 
         list.sort();
 
