@@ -1,55 +1,50 @@
 use std::{cmp::Ordering, collections::HashMap};
 
+fn quick_sort_recursive<T, F>(list: &mut Vec<T>, low_idx: usize, high_idx: usize, compare: &F)
+where
+    F: Fn(&T, &T) -> Ordering
+{
+    if high_idx <= low_idx {
+        return;
+    }
+
+    let mut pivot_idx = low_idx + (high_idx - low_idx) / 2;
+    let mut left_idx = low_idx;
+    let mut right_idx = high_idx;
+
+    while left_idx <= right_idx && right_idx > 0 {
+        let left_compare = compare(&list[left_idx], &list[pivot_idx]);
+        let right_compare = compare(&list[right_idx], &list[pivot_idx]);
+        if left_compare.is_le() {
+            left_idx += 1;
+        } else if right_compare.is_ge() {
+            right_idx -= 1;
+        } else {
+            list.swap(left_idx, right_idx);
+            left_idx += 1;
+            right_idx -= 1;
+        }
+    }
+
+    if pivot_idx < right_idx {
+        list.swap(pivot_idx, right_idx);
+        pivot_idx = right_idx;
+    } else if pivot_idx > left_idx {
+        list.swap(pivot_idx, left_idx);
+        pivot_idx = left_idx;
+    }
+
+    if pivot_idx > 0 {
+        quick_sort_recursive(list, low_idx, pivot_idx - 1, compare);
+    }
+    quick_sort_recursive(list, pivot_idx + 1, high_idx, compare);
+}
+
 pub fn quick_sort<T, F>(list: &mut Vec<T>, compare: F) 
 where
-    T: PartialOrd + Copy,
     F: Fn(&T, &T) -> Ordering,
 {
     quick_sort_recursive(list, 0, list.len() - 1, &compare);
-
-    fn quick_sort_recursive<T: Copy, F: Fn(&T, &T) -> Ordering>(list: &mut Vec<T>, low_idx: usize, high_idx: usize, compare: &F) {
-        fn swap<T: Copy>(list: &mut Vec<T>, idx_one: usize, idx_two: usize) {
-            let temp = list[idx_one];
-            list[idx_one] = list[idx_two];
-            list[idx_two] = temp;
-        }
-
-        if high_idx <= low_idx {
-            return;
-        }
-
-        let mut pivot_idx = low_idx + (high_idx - low_idx) / 2;
-        let pivot = list[pivot_idx];
-        let mut left_idx = low_idx;
-        let mut right_idx = high_idx;
-
-        while left_idx <= right_idx && right_idx > 0 {
-            let left_compare = compare(&list[left_idx], &pivot);
-            let right_compare = compare(&list[right_idx], &pivot);
-            if left_compare.is_le() {
-                left_idx += 1;
-            } else if right_compare.is_ge() {
-                right_idx -= 1;
-            } else {
-                swap(list, left_idx, right_idx);
-                left_idx += 1;
-                right_idx -= 1;
-            }
-        }
-
-        if pivot_idx < right_idx {
-            swap(list, pivot_idx, right_idx);
-            pivot_idx = right_idx;
-        } else if pivot_idx > left_idx {
-            swap(list, pivot_idx, left_idx);
-            pivot_idx = left_idx;
-        }
-
-        if pivot_idx > 0 {
-            quick_sort_recursive(list, low_idx, pivot_idx - 1, compare);
-        }
-        quick_sort_recursive(list, pivot_idx + 1, high_idx, compare);
-    }
 }
 
 pub fn calculate_distance(list_one: &Vec<i64>, list_two: &Vec<i64>) -> Result<i64, &'static str> {
