@@ -1,6 +1,6 @@
-
 use std::fs;
 use std::collections::{HashMap, HashSet};
+use crate::common::quick_sort;
 
 pub fn main(file_path: String)
 {
@@ -26,34 +26,69 @@ pub fn main(file_path: String)
         update_rules_map.get_mut(key).unwrap().insert(value);
     }
 
-    println!("Rules: {update_rules_map:?}");
-
     // Check if updates are valid and sum up middle parts of the update.
+    let mut middle_page_sum_valid: u64 = 0;
+    let mut invalid_updates: Vec<Vec<&str>> = Vec::new();
     for update in updates.lines() {
-        println!("Updates: {update}");
         let mut is_valid = true;
         // Set to store observed updates
-        let mut observed_updates: HashSet<&str> = HashSet::new();
+        let mut observed_pages: HashSet<&str> = HashSet::new();
 
-        let update_parts: Vec<&str> = updates.split(",").collect();
-        for update_value in update_parts {
-            println!("Update value: {update_value}");
-            let descendant_updates = update_rules_map.get(update_value);
+        let pages: Vec<&str> = update.split(",").collect();
+        for page in &pages {
+            let dependent_pages = update_rules_map.get(page);
             
-            if let Some(descendant_updates) = descendant_updates {
+            if let Some(descendant_updates) = dependent_pages {
                 // If descendant is already in observed updates, the rules have been broken.
-                if !observed_updates.is_disjoint(descendant_updates) {
-                    println!("Invalid: {update_value} {update} {descendant_updates:?} {observed_updates:?}");
+                if !observed_pages.is_disjoint(descendant_updates) {
                     is_valid = false;
+                    
                     break;
                 }
             }
 
-            observed_updates.insert(update_value);
+            observed_pages.insert(page);
         }
 
         if is_valid {
-            println!("Valid: {update}");
+            let middle_page = pages[pages.len()/2];
+            let middle_page = u64::from_str_radix(middle_page, 10).unwrap();
+            middle_page_sum_valid += middle_page;
+        } else {
+            invalid_updates.push(pages);
         }
     }
+
+    // Fix incorrect pages and calculate middle sum
+    let mut middle_page_sum_invalid: u64 = 0;
+    for mut pages in invalid_updates {
+        // Sort invalid update pages based on update rules.
+        quick_sort(&mut pages, |a, b| {
+            // If a should preceed b in the update, a < b.
+            if update_rules_map.contains_key(*a) {
+                let rule = update_rules_map.get(*a).unwrap();
+                if rule.contains(*b) {
+                    return std::cmp::Ordering::Less;
+                }
+            }
+
+            // If b should precede a in the update, a > b.
+            if update_rules_map.contains_key(*b) {
+                let rule = update_rules_map.get(*b).unwrap();
+                if rule.contains(*a) {
+                    return std::cmp::Ordering::Greater;
+                }
+            }
+
+            // If no rules apply to a and b, a == b.
+            std::cmp::Ordering::Equal
+        });
+
+        let middle_page = pages[pages.len()/2];
+        let middle_page = u64::from_str_radix(middle_page, 10).unwrap();
+        middle_page_sum_invalid += middle_page;
+    }
+
+    println!("Middle Page Sum (Valid Updates): {middle_page_sum_valid}");
+    println!("Middle Page Sum (Fixed Invalid Updates): {middle_page_sum_invalid}");
 }
