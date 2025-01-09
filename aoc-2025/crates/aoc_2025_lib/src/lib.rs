@@ -1,8 +1,15 @@
 pub(crate) mod common;
 
-pub mod day1;
-pub mod day2;
-pub mod day3;
-pub mod day4;
-pub mod day5;
-pub mod day6;
+use paste::paste;
+
+macro_rules! declare_modules {
+    ($($mod_number:tt),*) => {
+        $(
+            paste! {
+                pub mod [<day $mod_number>];
+            }
+        )*
+    };
+}
+
+declare_modules!(1, 2, 3, 4, 5, 6, 7);

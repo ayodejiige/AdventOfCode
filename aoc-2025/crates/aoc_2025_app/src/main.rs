@@ -33,6 +33,9 @@ fn main() {
         6 => {
             aoc_2025_lib::day6::main
         }
+        7 => {
+            aoc_2025_lib::day7::main
+        }
         _ => {
             println!("Invalid day: {day}");
             return;
