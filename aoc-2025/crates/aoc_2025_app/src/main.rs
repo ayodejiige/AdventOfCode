@@ -1,6 +1,24 @@
 use std::env;
 use std::path::Path;
+use paste::paste;
 
+macro_rules! match_days {
+    ($curr_day:expr, $($day_num:tt),*) => {
+        match $curr_day {
+            $(
+                $day_num => {
+                    paste! {
+                        aoc_2025_lib::[<day $day_num>]::main
+                    }
+                },
+            )*
+            _ => {
+                println!("Invalid day: {}", $curr_day);
+                return;
+            }
+        }
+    };
+}
 fn main() {
     let args = env::args().collect::<Vec<_>>();
     
@@ -14,33 +32,7 @@ fn main() {
 
     // Select main function to run.
     let day = u32::from_str_radix(day_arg, 10).unwrap();
-    let _main = match day {
-        1 => {
-            aoc_2025_lib::day1::main
-        },
-        2 => {
-            aoc_2025_lib::day2::main
-        }
-        3 => {
-            aoc_2025_lib::day3::main
-        }
-        4 => {
-            aoc_2025_lib::day4::main
-        }
-        5 => {
-            aoc_2025_lib::day5::main
-        }
-        6 => {
-            aoc_2025_lib::day6::main
-        }
-        7 => {
-            aoc_2025_lib::day7::main
-        }
-        _ => {
-            println!("Invalid day: {day}");
-            return;
-        }
-    };
+    let _main = match_days!(day, 1, 2, 3, 4, 5, 6, 7, 8);
 
     // Check that input folder exists.
     if !Path::new(input_folder_arg).exists() {

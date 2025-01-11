@@ -1,3 +1,5 @@
+use crate::common::Position;
+
 use std::collections::{HashMap, HashSet};
 use std::fs;
 
@@ -8,24 +10,6 @@ enum GuardDirections {
     Right,
     Down,
     Left,
-}
-
-/// Struct to represent a position in the grid.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-struct Position {
-    row: usize,
-    col: usize,
-}
-
-impl Position {
-    /// Create a new instance of the position.
-    ///
-    /// # Arguments
-    ///    row: The row index of the position.
-    ///    col: The column index of the position.
-    fn new(row: usize, col: usize) -> Self {
-        Self { row, col }
-    }
 }
 
 /// Struct to represent the lab. The lab has the following properties:

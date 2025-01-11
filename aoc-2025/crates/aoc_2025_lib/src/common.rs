@@ -1,4 +1,4 @@
-use std::{cmp::Ordering, collections::HashMap};
+use std::cmp::Ordering;
 
 fn quick_sort_recursive<T, F>(list: &mut Vec<T>, low_idx: usize, high_idx: usize, compare: &F)
 where
@@ -47,38 +47,22 @@ where
     quick_sort_recursive(list, 0, list.len() - 1, &compare);
 }
 
-pub fn calculate_distance(list_one: &Vec<i64>, list_two: &Vec<i64>) -> Result<i64, &'static str> {
-    let mut distance: i64 = 0;
-
-    if list_one.len() != list_two.len() {
-        return Err("Both lists should have same length");
-    }
-
-    for it in list_one.iter().zip(list_two.iter()) {
-        distance += i64::abs(it.0 - it.1);
-    }
-
-    Ok(distance)
+/// Struct to represent a position in the grid.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct Position {
+    pub row: usize,
+    pub col: usize,
 }
 
-pub fn calculate_similarity(list_one: &Vec<i64>, list_two: &Vec<i64>) -> Result<i64, &'static str> {
-    let mut similarity: i64 = 0;
-    let mut list_two_map: HashMap<i64, i64> = HashMap::new();
-
-    for num in list_two {
-        match list_two_map.get(num) {
-            Some(count) => list_two_map.insert(*num, count + 1),
-            None => list_two_map.insert(*num, 1),
-        };
+impl Position {
+    /// Create a new instance of the position.
+    ///
+    /// # Arguments
+    ///    row: The row index of the position.
+    ///    col: The column index of the position.
+    pub fn new(row: usize, col: usize) -> Self {
+        Self { row, col }
     }
-
-    for num in list_one {
-        if let Some(count) = list_two_map.get(num) {
-            similarity += *count * *num;
-        }
-    }
-
-    Ok(similarity)
 }
 
 #[cfg(test)]
