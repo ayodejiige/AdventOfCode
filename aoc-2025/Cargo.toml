@@ -5,3 +5,9 @@ resolver = "2"
 [workspace.package]
 version = "0.1.0"
 edition = "2021"
+
+[workspace.dependencies]
+aoc_2025_lib = { path = "crates/aoc_2025_lib"} 
+paste = "1.0"
+regex = "1.11.1"
+rand = "0"

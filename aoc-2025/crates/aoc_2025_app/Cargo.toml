@@ -4,5 +4,5 @@ version.workspace = true
 edition.workspace = true
 
 [dependencies]
-aoc_2025_lib = { path = "../aoc_2025_lib"} 
-paste = "1.0"
+aoc_2025_lib.workspace = true
+paste.workspace = true
