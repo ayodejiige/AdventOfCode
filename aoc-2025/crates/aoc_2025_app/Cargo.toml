@@ -1,0 +1,8 @@
+[package]
+name = "aoc_2025_app"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+aoc_2025_lib.workspace = true
+paste.workspace = true

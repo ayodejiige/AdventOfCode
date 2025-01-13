@@ -1,0 +1,11 @@
+[package]
+name = "aoc_2025_lib"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+regex.workspace = true
+paste.workspace = true
+
+[dev-dependencies]
+rand.workspace = true
