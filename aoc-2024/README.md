@@ -1,5 +1,5 @@
 # Advent of Code 2024
-This folder contains solutions to the Advent of Code 2024challenges.
+This folder contains solutions to the Advent of Code 2024 challenges.
 
 ## Setup
 
