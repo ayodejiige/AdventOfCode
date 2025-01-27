@@ -32,7 +32,7 @@ fn main() {
 
     // Select main function to run.
     let day = u32::from_str_radix(day_arg, 10).unwrap();
-    let _main = match_days!(day, 1, 2, 3, 4, 5, 6, 7, 8);
+    let _main = match_days!(day, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
     // Check that input folder exists.
     if !Path::new(input_folder_arg).exists() {
