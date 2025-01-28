@@ -284,7 +284,7 @@ mod tests {
     }
 
     #[test]
-    fn test3() {
+    fn test2() {
         let content: Vec<u64> = String::from("111112121")
             .chars()
             .map(|x| x.to_digit(10).unwrap() as u64)
