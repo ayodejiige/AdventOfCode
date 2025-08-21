@@ -1,3 +1,4 @@
+use crate::common::number_of_digits;
 use std::fs;
 
 /// Trait to concatenate two u64 values.
@@ -9,24 +10,13 @@ trait Concat {
 impl Concat for u64 {
     /// Concatenates two u64 values.
     fn concat(self, other: u64) -> u64 {
-        /// Counts the number of digits in a u64 value.
-        fn count_digits(val: u64) -> u32 {
-            let mut res = 1;
-            let mut val = val/10;
-            while val != 0 {
-                res += 1;
-                val /= 10;
-            }
-            res
-        }
-
-        let other_digits = count_digits(other);
-        self * 10_u64.pow(other_digits) + other
+        let other_digits = number_of_digits(other);
+        self * 10_u64.pow(other_digits as u32) + other
     }
 }
 
 /// Returns true if the test is calibrated, false otherwise. A test is calibration if there
-/// exist an equation evaluated from left to right using between the test paramters, 
+/// exist an equation evaluated from left to right using between the test paramters,
 /// using a combination of the * and + operators
 fn is_calibrated(test_value: u64, test_parameters: Vec<u64>) -> bool {
     // Solution for this problem is essentially a depth first search on
@@ -63,7 +53,9 @@ pub fn main(file_path: String) {
     let mut calibrated_sum = 0;
 
     for line in content.lines() {
-        let equation_components: Vec<&str> = line.split(": ").collect();
+        let equation_components: Vec<&str> = line
+            .split(": ")
+            .collect();
         let test_value = u64::from_str_radix(equation_components[0], 10).unwrap();
         let test_parameters: Vec<u64> = equation_components[1]
             .split(" ")

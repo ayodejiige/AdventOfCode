@@ -1,7 +1,8 @@
 use crate::common::Position;
-
-use std::fs;
-use std::collections::{HashMap, HashSet};
+use std::{
+    collections::{HashMap, HashSet},
+    fs,
+};
 
 /// Struct to represent the city. Specifically antennas on the roofs of buildings.
 struct City {
@@ -18,11 +19,7 @@ impl City {
     fn new(map: Vec<Vec<char>>) -> City {
         let length = map.len();
         let width = map[0].len();
-        City { 
-            map,
-            length,
-            width
-        }
+        City { map, length, width }
     }
 
     /// Give a row and col, check if it is within the boundaries of the city.
@@ -31,7 +28,12 @@ impl City {
     }
 
     /// Given a pair of satellites of the same kind. Find distinct antinodes.
-    fn count_antenna_pair_antinodes(&self, antenna_a: &Position, antenna_b: &Position, antinodes: &mut HashSet<Position>) {
+    fn count_antenna_pair_antinodes(
+        &self,
+        antenna_a: &Position,
+        antenna_b: &Position,
+        antinodes: &mut HashSet<Position>,
+    ) {
         let a_row = antenna_a.row as isize;
         let a_col = antenna_a.col as isize;
         let b_row = antenna_b.row as isize;
@@ -48,19 +50,23 @@ impl City {
         let mut antinode_two_col = b_col - col_distance;
 
         while self.is_in_city(antinode_one_row, antinode_one_col) {
-            antinodes.insert(Position::new(antinode_one_row as usize, antinode_one_col as usize));
+            antinodes.insert(Position::new(
+                antinode_one_row as usize,
+                antinode_one_col as usize,
+            ));
             antinode_one_row += row_distance;
             antinode_one_col += col_distance;
         }
 
-        while self.is_in_city(antinode_two_row, antinode_two_col)
-        {
-            antinodes.insert(Position::new(antinode_two_row as usize, antinode_two_col as usize));
+        while self.is_in_city(antinode_two_row, antinode_two_col) {
+            antinodes.insert(Position::new(
+                antinode_two_row as usize,
+                antinode_two_col as usize,
+            ));
             antinode_two_row += row_distance;
             antinode_two_col += col_distance;
         }
     }
-
 
     /// Count the number of antinodes in the city. An antinode occurs at any point that is perfectly in
     /// line with two antennas of the same kind.
@@ -69,30 +75,42 @@ impl City {
         let mut antinodes: HashSet<Position> = HashSet::new(); // to store unique antinodes.
 
         // Group antennas of the same kind into a map.
-        for (row, line) in self.map.iter().enumerate() {
-            for (col,node) in line.iter().enumerate() {
+        for (row, line) in self
+            .map
+            .iter()
+            .enumerate()
+        {
+            for (col, node) in line
+                .iter()
+                .enumerate()
+            {
                 if *node == '.' {
                     // Node is not an antenna
                     continue;
                 }
 
-                if !antenna_map.contains_key(node){
+                if !antenna_map.contains_key(node) {
                     antenna_map.insert(*node, Vec::new());
                 }
 
-                antenna_map.get_mut(node).unwrap().push(Position::new(row, col));
+                antenna_map
+                    .get_mut(node)
+                    .unwrap()
+                    .push(Position::new(row, col));
             }
         }
 
         // For each kind of antenna, count the possible antinodes for each pair of distinct antennas.
         for key in antenna_map.keys() {
-            let matching_antennas = antenna_map.get(key).unwrap();
-            
-            // Any two antennas of the same kind will form a line. Loop through each pair of 
+            let matching_antennas = antenna_map
+                .get(key)
+                .unwrap();
+
+            // Any two antennas of the same kind will form a line. Loop through each pair of
             // distinct antennas of the same kind to find the antinodes within the boundaries of the city
             for antenna_a in matching_antennas {
                 for antenna_b in matching_antennas {
-                    if antenna_a ==  antenna_b {
+                    if antenna_a == antenna_b {
                         // One antenna cannot form a line.
                         continue;
                     }
@@ -114,7 +132,10 @@ pub fn main(file_path: String) {
     let map: Vec<Vec<char>> = fs::read_to_string(file_path)
         .unwrap()
         .lines()
-        .map(|line| line.chars().collect())
+        .map(|line| {
+            line.chars()
+                .collect()
+        })
         .collect();
 
     let antinodes_count = City::new(map).count_antinodes();

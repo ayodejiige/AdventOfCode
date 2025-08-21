@@ -9,7 +9,7 @@ fn is_safe_magnitude(prev: i64, curr: i64) -> bool {
 
 fn is_safe_direction(prev: i64, curr: i64, increase_expected: bool) -> bool {
     let increasing = curr > prev;
-    
+
     increasing == increase_expected
 }
 
@@ -26,7 +26,7 @@ fn is_report_safe(reports: &Vec<i64>) -> bool {
             return false;
         }
 
-        if !is_safe_magnitude(prev_num, reports[idx])  {
+        if !is_safe_magnitude(prev_num, reports[idx]) {
             return false;
         }
 
@@ -60,8 +60,11 @@ fn calculate_safety(file_path: &String) -> Result<i64, &'static str> {
 
     for line in content.lines() {
         let re = Regex::new(r"\s+").unwrap();
-        let numbers: Vec<&str> = re.split(line).collect::<Vec<&str>>();
-        let numbers = numbers.iter()
+        let numbers: Vec<&str> = re
+            .split(line)
+            .collect::<Vec<&str>>();
+        let numbers = numbers
+            .iter()
             .map(|&x| i64::from_str_radix(x, 10).unwrap())
             .collect::<Vec<i64>>();
 
@@ -74,8 +77,7 @@ fn calculate_safety(file_path: &String) -> Result<i64, &'static str> {
 }
 
 pub fn main(file_path: String) {
-    let ans = calculate_safety(&file_path)
-        .unwrap();
+    let ans = calculate_safety(&file_path).unwrap();
 
     println!("Safe reports: {}", ans);
 }

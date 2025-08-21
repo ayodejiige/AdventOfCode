@@ -1,0 +1,2 @@
+chain_width = 0
+imports_granularity = "Crate"

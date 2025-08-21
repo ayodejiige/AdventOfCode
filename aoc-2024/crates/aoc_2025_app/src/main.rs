@@ -1,8 +1,7 @@
-use std::env;
-use std::path::Path;
 use paste::paste;
+use std::{env, path::Path};
 
-macro_rules! match_days {
+macro_rules! select_routine {
     ($curr_day:expr, $($day_num:tt),*) => {
         match $curr_day {
             $(
@@ -21,18 +20,18 @@ macro_rules! match_days {
 }
 fn main() {
     let args = env::args().collect::<Vec<_>>();
-    
+
     if args.len() < 3 {
         println!("Error: Invalid arguments");
         return;
     }
 
-    let day_arg = &args[1];
-    let input_folder_arg = &args[2];
+    let input_folder_arg = &args[1];
+    let day_arg = &args[2];
 
     // Select main function to run.
     let day = u32::from_str_radix(day_arg, 10).unwrap();
-    let _main = match_days!(day, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+    let _main = select_routine!(day, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
 
     // Check that input folder exists.
     if !Path::new(input_folder_arg).exists() {

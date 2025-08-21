@@ -1,14 +1,17 @@
-use std::fs;
-use std::collections::{HashMap, HashSet};
 use crate::common::quick_sort;
+use std::{
+    collections::{HashMap, HashSet},
+    fs,
+};
 
-pub fn main(file_path: String)
-{
+pub fn main(file_path: String) {
     // Open file.
     let content = fs::read_to_string(file_path).unwrap();
 
     // Split by double new lines into rules list and updates.
-    let content_split = content.split_terminator("\n\n").collect::<Vec<_>>();
+    let content_split = content
+        .split_terminator("\n\n")
+        .collect::<Vec<_>>();
     let update_rules = content_split[0];
     let updates = content_split[1];
 
@@ -16,14 +19,19 @@ pub fn main(file_path: String)
     // that must come after the key.
     let mut update_rules_map: HashMap<&str, HashSet<&str>> = HashMap::new();
     for update_rule in update_rules.lines() {
-        let parts: Vec<&str> = update_rule.split("|").collect();
+        let parts: Vec<&str> = update_rule
+            .split("|")
+            .collect();
         let key = parts[0];
         let value = parts[1];
         if !update_rules_map.contains_key(key) {
             let values = HashSet::new();
             update_rules_map.insert(key, values);
         }
-        update_rules_map.get_mut(key).unwrap().insert(value);
+        update_rules_map
+            .get_mut(key)
+            .unwrap()
+            .insert(value);
     }
 
     // Check if updates are valid and sum up middle parts of the update.
@@ -34,15 +42,17 @@ pub fn main(file_path: String)
         // Set to store observed updates
         let mut observed_pages: HashSet<&str> = HashSet::new();
 
-        let pages: Vec<&str> = update.split(",").collect();
+        let pages: Vec<&str> = update
+            .split(",")
+            .collect();
         for page in &pages {
             let dependent_pages = update_rules_map.get(page);
-            
+
             if let Some(descendant_updates) = dependent_pages {
                 // If descendant is already in observed updates, the rules have been broken.
                 if !observed_pages.is_disjoint(descendant_updates) {
                     is_valid = false;
-                    
+
                     break;
                 }
             }
@@ -51,7 +61,7 @@ pub fn main(file_path: String)
         }
 
         if is_valid {
-            let middle_page = pages[pages.len()/2];
+            let middle_page = pages[pages.len() / 2];
             let middle_page = u64::from_str_radix(middle_page, 10).unwrap();
             middle_page_sum_valid += middle_page;
         } else {
@@ -66,7 +76,9 @@ pub fn main(file_path: String)
         quick_sort(&mut pages, |a, b| {
             // If a should preceed b in the update, a < b.
             if update_rules_map.contains_key(*a) {
-                let rule = update_rules_map.get(*a).unwrap();
+                let rule = update_rules_map
+                    .get(*a)
+                    .unwrap();
                 if rule.contains(*b) {
                     return std::cmp::Ordering::Less;
                 }
@@ -74,7 +86,9 @@ pub fn main(file_path: String)
 
             // If b should precede a in the update, a > b.
             if update_rules_map.contains_key(*b) {
-                let rule = update_rules_map.get(*b).unwrap();
+                let rule = update_rules_map
+                    .get(*b)
+                    .unwrap();
                 if rule.contains(*a) {
                     return std::cmp::Ordering::Greater;
                 }
@@ -84,7 +98,7 @@ pub fn main(file_path: String)
             std::cmp::Ordering::Equal
         });
 
-        let middle_page = pages[pages.len()/2];
+        let middle_page = pages[pages.len() / 2];
         let middle_page = u64::from_str_radix(middle_page, 10).unwrap();
         middle_page_sum_invalid += middle_page;
     }

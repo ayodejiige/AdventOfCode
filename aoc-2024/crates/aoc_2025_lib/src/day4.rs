@@ -2,9 +2,8 @@ use std::fs;
 struct XmasSearch {
     grid: Vec<Vec<char>>,
     row_size: usize,
-    col_size: usize
+    col_size: usize,
 }
-
 
 #[derive(Debug)]
 enum GridSearchDirections {
@@ -15,7 +14,7 @@ enum GridSearchDirections {
     UpLeft,
     UpRight,
     DownLeft,
-    DownRight
+    DownRight,
 }
 
 impl XmasSearch {
@@ -25,21 +24,21 @@ impl XmasSearch {
         XmasSearch {
             grid,
             row_size,
-            col_size
+            col_size,
         }
     }
 
     fn in_bound(&self, direction: &GridSearchDirections, row: usize, col: usize) -> bool {
         let mut row = row as isize;
         let mut col = col as isize;
-    
+
         match direction {
             GridSearchDirections::Left => {
                 col -= 3;
-            },
+            }
             GridSearchDirections::Right => {
                 col += 3;
-            },
+            }
             GridSearchDirections::Up => {
                 row -= 3;
             }
@@ -49,34 +48,43 @@ impl XmasSearch {
             GridSearchDirections::UpLeft => {
                 row -= 3;
                 col -= 3;
-            },
+            }
             GridSearchDirections::UpRight => {
                 row -= 3;
                 col += 3;
-            },
+            }
             GridSearchDirections::DownLeft => {
                 row += 3;
                 col -= 3;
-            },
+            }
             GridSearchDirections::DownRight => {
                 row += 3;
                 col += 3;
             }
         }
 
-        return row < self.row_size as isize && row >= 0 && col < self.col_size as isize && col >= 0;
+        return row < self.row_size as isize
+            && row >= 0
+            && col < self.col_size as isize
+            && col >= 0;
     }
 
-    fn next_cell(&self, direction: &GridSearchDirections, row: usize, col: usize, distance: usize) -> (usize, usize) {
+    fn next_cell(
+        &self,
+        direction: &GridSearchDirections,
+        row: usize,
+        col: usize,
+        distance: usize,
+    ) -> (usize, usize) {
         match direction {
-            GridSearchDirections::Left => return (row, col-distance),
-            GridSearchDirections::Right => return (row, col+distance),
-            GridSearchDirections::Up => return (row-distance, col),
-            GridSearchDirections::Down => return (row+distance, col),
-            GridSearchDirections::UpLeft => return (row-distance, col-distance),
-            GridSearchDirections::UpRight => return (row-distance, col+distance),
-            GridSearchDirections::DownLeft => return (row+distance, col-distance),
-            GridSearchDirections::DownRight => return (row+distance, col+distance)
+            GridSearchDirections::Left => return (row, col - distance),
+            GridSearchDirections::Right => return (row, col + distance),
+            GridSearchDirections::Up => return (row - distance, col),
+            GridSearchDirections::Down => return (row + distance, col),
+            GridSearchDirections::UpLeft => return (row - distance, col - distance),
+            GridSearchDirections::UpRight => return (row - distance, col + distance),
+            GridSearchDirections::DownLeft => return (row + distance, col - distance),
+            GridSearchDirections::DownRight => return (row + distance, col + distance),
         }
     }
 
@@ -91,7 +99,7 @@ impl XmasSearch {
             GridSearchDirections::UpLeft,
             GridSearchDirections::UpRight,
             GridSearchDirections::DownLeft,
-            GridSearchDirections::DownRight
+            GridSearchDirections::DownRight,
         ];
 
         for direction in search_directions {
@@ -111,7 +119,6 @@ impl XmasSearch {
             if found {
                 xmas_count += 1;
             }
-            
         }
 
         xmas_count
@@ -131,8 +138,8 @@ impl XmasSearch {
     /// Check if the current cell is the center of a X-MAS.
     fn is_x_mas_cell(&self, col: usize, row: usize) -> bool {
         // If cell is at the edge of the grid, there are not enough surrounding cells
-        // to form a X. 
-        if col == 0 || row == 0 || col == self.col_size-1 || row == self.row_size-1 {
+        // to form a X.
+        if col == 0 || row == 0 || col == self.col_size - 1 || row == self.row_size - 1 {
             return false;
         }
 
@@ -141,17 +148,17 @@ impl XmasSearch {
             return false;
         }
 
-        let top_left_char = self.grid[row-1][col-1];
-        let top_right_char = self.grid[row-1][col+1];
-        let bottom_left_char = self.grid[row+1][col-1];
-        let bottom_right_char = self.grid[row+1][col+1];
+        let top_left_char = self.grid[row - 1][col - 1];
+        let top_right_char = self.grid[row - 1][col + 1];
+        let bottom_left_char = self.grid[row + 1][col - 1];
+        let bottom_right_char = self.grid[row + 1][col + 1];
 
-        let right_diagonal_is_mas = (top_left_char == 'M' && bottom_right_char == 'S') 
+        let right_diagonal_is_mas = (top_left_char == 'M' && bottom_right_char == 'S')
             || (top_left_char == 'S' && bottom_right_char == 'M');
         let left_diagonal_is_mas = (top_right_char == 'M' && bottom_left_char == 'S')
             || (top_right_char == 'S' && bottom_left_char == 'M');
 
-        right_diagonal_is_mas && left_diagonal_is_mas 
+        right_diagonal_is_mas && left_diagonal_is_mas
     }
 
     /// Compute number of x-mas occurrences i.e. parts in the grid
@@ -159,7 +166,7 @@ impl XmasSearch {
     /// X will be the letter 'A' and the edges 'M' or 'A'
     fn compute_x_mas_occurrence(&self) -> u64 {
         let mut x_mas_count = 0;
-        
+
         for row in 0..self.row_size {
             for col in 0..self.col_size {
                 if self.is_x_mas_cell(col, row) {
@@ -169,16 +176,18 @@ impl XmasSearch {
         }
         x_mas_count
     }
-
 }
 
 pub fn main(file_path: String) {
     let grid = fs::read_to_string(file_path)
         .unwrap()
         .lines()
-        .map(|line| line.chars().collect::<Vec<char>>())
+        .map(|line| {
+            line.chars()
+                .collect::<Vec<char>>()
+        })
         .collect::<Vec<Vec<char>>>();
-    
+
     let xmas_search = XmasSearch::new(grid);
 
     let ans = xmas_search.compute_xmas_occurrence();

@@ -2,7 +2,7 @@ use std::cmp::Ordering;
 
 fn quick_sort_recursive<T, F>(list: &mut Vec<T>, low_idx: usize, high_idx: usize, compare: &F)
 where
-    F: Fn(&T, &T) -> Ordering
+    F: Fn(&T, &T) -> Ordering,
 {
     if high_idx <= low_idx {
         return;
@@ -40,7 +40,7 @@ where
     quick_sort_recursive(list, pivot_idx + 1, high_idx, compare);
 }
 
-pub fn quick_sort<T, F>(list: &mut Vec<T>, compare: F) 
+pub fn quick_sort<T, F>(list: &mut Vec<T>, compare: F)
 where
     F: Fn(&T, &T) -> Ordering,
 {
@@ -65,6 +65,16 @@ impl Position {
     }
 }
 
+pub fn number_of_digits(n: u64) -> usize {
+    let mut res = 1;
+    let mut val = n / 10;
+    while val != 0 {
+        res += 1;
+        val /= 10;
+    }
+    res
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -75,7 +85,9 @@ mod tests {
         let mut rng = rand::thread_rng();
         let range = Uniform::new(0, 100000);
 
-        let mut list = (0..10000).map(|_| rng.sample(&range)).collect::<Vec<i64>>();
+        let mut list = (0..10000)
+            .map(|_| rng.sample(&range))
+            .collect::<Vec<i64>>();
         let mut list_copy = list.clone();
         quick_sort(&mut list_copy, |a, b| a.cmp(b));
 
@@ -84,5 +96,13 @@ mod tests {
         for idx in 0..list.len() {
             assert_eq!(list[idx], list_copy[idx]);
         }
+    }
+
+    #[test]
+    fn test_number_of_digits() {
+        assert_eq!(number_of_digits(1), 1);
+        assert_eq!(number_of_digits(0), 1);
+        assert_eq!(number_of_digits(999), 3);
+        assert_eq!(number_of_digits(1234567890123456890 as u64), 20);
     }
 }

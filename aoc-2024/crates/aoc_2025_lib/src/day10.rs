@@ -1,5 +1,4 @@
-use std::collections::HashSet;
-use std::fs;
+use std::{collections::HashSet, fs};
 
 /// Struct representing a topographical map.
 struct TopographicalMap {
@@ -27,8 +26,15 @@ impl TopographicalMap {
     fn find_trailheads(&self) -> Vec<(usize, usize)> {
         let mut trailheads: Vec<(usize, usize)> = Vec::new();
 
-        for (row_idx, row) in self.map.iter().enumerate() {
-            for (col_idx, &height) in row.iter().enumerate() {
+        for (row_idx, row) in self
+            .map
+            .iter()
+            .enumerate()
+        {
+            for (col_idx, &height) in row
+                .iter()
+                .enumerate()
+            {
                 if height == 0 {
                     trailheads.push((row_idx, col_idx));
                 }

@@ -1,7 +1,8 @@
 use crate::common::Position;
-
-use std::collections::{HashMap, HashSet};
-use std::fs;
+use std::{
+    collections::{HashMap, HashSet},
+    fs,
+};
 
 /// Enum to represent the four directions the guard can face.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -35,8 +36,14 @@ impl Lab {
     ///     grid: A 2D vector of characters representing the grid of the lab.
     fn new(grid: Vec<Vec<char>>) -> Self {
         let mut guard_position = Position { row: 0, col: 0 };
-        for (row, line) in grid.iter().enumerate() {
-            for (col, character) in line.iter().enumerate() {
+        for (row, line) in grid
+            .iter()
+            .enumerate()
+        {
+            for (col, character) in line
+                .iter()
+                .enumerate()
+            {
                 if *character == '^' {
                     guard_position.row = row;
                     guard_position.col = col;
@@ -108,8 +115,15 @@ impl Lab {
     //
     // # Arguments
     //     new_barrier: The position of the new barrier.
-    fn try_trap_guard(&self, new_barrier: Position, starting_position: Position, starting_direction: GuardDirections) -> bool {
-        let mut grid = self.grid.clone();
+    fn try_trap_guard(
+        &self,
+        new_barrier: Position,
+        starting_position: Position,
+        starting_direction: GuardDirections,
+    ) -> bool {
+        let mut grid = self
+            .grid
+            .clone();
         let mut guard_position = starting_position;
         let mut guard_direction = starting_direction;
         let mut turning_positions: HashSet<(Position, GuardDirections)> = HashSet::new();
@@ -138,7 +152,9 @@ impl Lab {
     }
 
     fn solve_guard_positions(&self) -> (usize, usize) {
-        let grid = self.grid.clone();
+        let grid = self
+            .grid
+            .clone();
         let mut visited_positions: HashSet<Position> = HashSet::new();
         let mut visited_directions: HashMap<Position, GuardDirections> = HashMap::new();
         let mut guard_position = self.guard_initial_position;
@@ -156,7 +172,6 @@ impl Lab {
             }
 
             if grid[new_position.row][new_position.col] == '#' {
-
                 // Rotate the guard if it encounters a barrier.
                 guard_direction = self.rotate_guard(guard_direction);
             } else {
@@ -196,7 +211,10 @@ pub fn main(file_path: String) {
     let grid: Vec<Vec<char>> = fs::read_to_string(file_path)
         .unwrap()
         .lines()
-        .map(|line| line.chars().collect())
+        .map(|line| {
+            line.chars()
+                .collect()
+        })
         .collect();
 
     let (guard_positions, guard_traps) = Lab::new(grid).solve_guard_positions();

@@ -1,10 +1,12 @@
-use std::collections::{HashSet, VecDeque};
-use std::{fs, usize};
+use std::{
+    collections::{HashSet, VecDeque},
+    fs, usize,
+};
 
 #[derive(Debug)]
 enum FileBlocks {
     File(File),
-    Empty(EmptyBlock)
+    Empty(EmptyBlock),
 }
 
 /// Structure of a file in the filesystem. Each file has an id and a size.
@@ -46,7 +48,7 @@ impl EmptyBlock {
 
 // Calculate the sum of numbers between two numbers.
 ///
-/// # Arguments 
+/// # Arguments
 ///   * `start` - Start number.
 ///   * `end` - End number.
 fn sum_between(start: u64, end: u64) -> u64 {
@@ -114,25 +116,26 @@ fn organize_filesystem(file_blocks: &Vec<u64>) -> u64 {
             // If the rightmost unorganized file has been moved, we have a new rightmost unorganized file.
             rightmost_unorganized_file_idx -= 2;
         }
-        
-        if unorganized_files[leftmost_blocks_idx] == 0 || !file_moved{
+
+        if unorganized_files[leftmost_blocks_idx] == 0 || !file_moved {
             if unorganized_files[leftmost_blocks_idx] != 0 {
                 // If the current leftmost block has been not been used up at this point, it cannot be filled up.
                 match organized_filesystem.back_mut() {
                     Some(FileBlocks::File(_)) => {
-                        organized_filesystem.push_back(FileBlocks::Empty(EmptyBlock::new(unorganized_files[leftmost_blocks_idx])));
+                        organized_filesystem.push_back(FileBlocks::Empty(EmptyBlock::new(
+                            unorganized_files[leftmost_blocks_idx],
+                        )));
                     }
                     Some(FileBlocks::Empty(empty)) => {
                         empty.size += unorganized_files[leftmost_blocks_idx];
                     }
                     _ => {}
-                    
                 }
             }
-            
+
             // Move the next leftmost block.
             leftmost_blocks_idx += 1;
-            
+
             if leftmost_blocks_idx % 2 == 0 && !organized_files_idx.contains(&leftmost_blocks_idx) {
                 // If the next left most block is a file and it has not been moved, it cannot be moved.
                 organized_filesystem.push_back(FileBlocks::File(File::new(
@@ -140,7 +143,7 @@ fn organize_filesystem(file_blocks: &Vec<u64>) -> u64 {
                     unorganized_files[leftmost_blocks_idx],
                 )));
                 organized_files_idx.insert(leftmost_blocks_idx);
-                
+
                 // Move to the next empty block sicne the current leftmost block is a file that cannot be moved.
                 leftmost_blocks_idx += 1;
             }
@@ -150,12 +153,13 @@ fn organize_filesystem(file_blocks: &Vec<u64>) -> u64 {
     }
 
     // Calculate checksum of organized files.
-    let mut cummulative_sum= 0;
+    let mut cummulative_sum = 0;
     let mut current_block_idx = 0;
     for file_block in &organized_filesystem {
-        match file_block{
+        match file_block {
             FileBlocks::File(file) => {
-                let block_idx_sum = sum_between(current_block_idx, current_block_idx + file.size - 1);
+                let block_idx_sum =
+                    sum_between(current_block_idx, current_block_idx + file.size - 1);
                 cummulative_sum += file.id * block_idx_sum;
                 current_block_idx += file.size;
             }
@@ -244,8 +248,7 @@ fn organize_filesystem_fragmented(file_blocks: &Vec<u64>) -> u64 {
         compact_files.push((right_file_id, right_size));
     }
 
-
-    let mut checksum= 0;
+    let mut checksum = 0;
     let mut cummulative_size = 0;
     for (file_id, file_size) in compact_files {
         checksum += file_id * (cummulative_size..cummulative_size + file_size).sum::<u64>();
@@ -259,7 +262,10 @@ pub fn main(file_path: String) {
     let content: Vec<u64> = fs::read_to_string(file_path)
         .unwrap()
         .chars()
-        .map(|x| x.to_digit(10).unwrap() as u64)
+        .map(|x| {
+            x.to_digit(10)
+                .unwrap() as u64
+        })
         .collect();
 
     let checksum = organize_filesystem_fragmented(&content);
@@ -277,7 +283,10 @@ mod tests {
     fn test1() {
         let content: Vec<u64> = String::from("2333133121414131402")
             .chars()
-            .map(|x| x.to_digit(10).unwrap() as u64)
+            .map(|x| {
+                x.to_digit(10)
+                    .unwrap() as u64
+            })
             .collect();
         assert!(organize_filesystem_fragmented(&content) == 1928);
         assert!(organize_filesystem(&content) == 2858);
@@ -287,7 +296,10 @@ mod tests {
     fn test2() {
         let content: Vec<u64> = String::from("111112121")
             .chars()
-            .map(|x| x.to_digit(10).unwrap() as u64)
+            .map(|x| {
+                x.to_digit(10)
+                    .unwrap() as u64
+            })
             .collect();
         assert!(organize_filesystem_fragmented(&content) == 23);
         assert!(organize_filesystem(&content) == 23);

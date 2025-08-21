@@ -1,8 +1,6 @@
 use crate::common::quick_sort;
-use std::collections::HashMap;
-
 use regex::Regex;
-use std::fs;
+use std::{collections::HashMap, fs};
 
 fn calculate_distance(list_one: &Vec<i64>, list_two: &Vec<i64>) -> Result<i64, &'static str> {
     let mut distance: i64 = 0;
@@ -11,7 +9,10 @@ fn calculate_distance(list_one: &Vec<i64>, list_two: &Vec<i64>) -> Result<i64, &
         return Err("Both lists should have same length");
     }
 
-    for it in list_one.iter().zip(list_two.iter()) {
+    for it in list_one
+        .iter()
+        .zip(list_two.iter())
+    {
         distance += i64::abs(it.0 - it.1);
     }
 
@@ -46,7 +47,9 @@ fn read_input_file(file_path: &String) -> Result<(Vec<i64>, Vec<i64>), &'static 
 
     for line in content.lines() {
         let re = Regex::new(r"\s+").unwrap();
-        let numbers: Vec<&str> = re.split(line).collect::<Vec<&str>>();
+        let numbers: Vec<&str> = re
+            .split(line)
+            .collect::<Vec<&str>>();
 
         let num_one = i64::from_str_radix(numbers[0], 10).unwrap();
         let num_two = i64::from_str_radix(numbers[1], 10).unwrap();
