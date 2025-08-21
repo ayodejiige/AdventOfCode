@@ -31,7 +31,7 @@ fn main() {
 
     // Select main function to run.
     let day = u32::from_str_radix(day_arg, 10).unwrap();
-    let _main = select_routine!(day, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+    let main_function = select_routine!(day, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
 
     // Check that input folder exists.
     if !Path::new(input_folder_arg).exists() {
@@ -47,5 +47,5 @@ fn main() {
     }
 
     // Run main function.
-    _main(input_file);
+    main_function(input_file);
 }
