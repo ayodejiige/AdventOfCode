@@ -8,3 +8,8 @@ regex.workspace = true
 
 [dev-dependencies]
 rand.workspace = true
+criterion.workspace = true
+
+[[bench]]
+name = "blink"
+harness = false
