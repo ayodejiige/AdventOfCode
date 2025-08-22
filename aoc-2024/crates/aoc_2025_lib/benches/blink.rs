@@ -6,7 +6,7 @@ fn bench_blinks(c: &mut Criterion) {
 
     let mut group = c.benchmark_group("blinks");
 
-    for blinks in [1, 10, 20] {
+    for blinks in [1, 10, 20, 30, 40] {
         group.bench_with_input(BenchmarkId::new("brute", blinks), &blinks, |b, &blinks| {
             b.iter(|| blink_brute(&stones, blinks));
         });
