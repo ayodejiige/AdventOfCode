@@ -1,4 +1,4 @@
-#include "Dayx.hpp"
+#include "DayX.hpp"
 #include <CLI/CLI.hpp>
 #include <cstdint>
 #include <iostream>
