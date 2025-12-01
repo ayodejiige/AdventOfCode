@@ -5,7 +5,6 @@
 
 class Day1 : public DayX {
 private:
-  std::string m_InputFile;
 
 protected:
   std::pair<std::string, std::string> solveImplementation() override;
