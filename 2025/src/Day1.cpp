@@ -23,7 +23,7 @@ std::pair<std::string, std::string> Day1::solveImplementation() {
   std::string part1_result = "Part 1 not implemented";
   std::string part2_result = "Part 2 not implemented";
 
-  for (auto line : lines) {
+  for (const auto& line : lines) {
     // Each line of format R{distance} or L{distance} e.g. R64
     //
     // distance represent the number of clicks to move on the dial to the next
