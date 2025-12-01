@@ -59,7 +59,7 @@ std::pair<std::string, std::string> Day1::solveImplementation() {
       }
       // A left rotation of N clicks would be the same as a right rotation
       // of (TOTAL_CLICKS - N) clicks. Using this for convenience of avoiding
-      // substractions.
+      // subtractions.
       clicks = TOTAL_CLICKS - clicks;
     } else if (direction == "R") {
       if (clicks > (TOTAL_CLICKS - position)) {
