@@ -35,7 +35,7 @@ std::pair<std::string, std::string> Day1::solveImplementation() {
 
     // The distance may exceed the number of available ticks on the dial before
     // hitting the current position. revolutions represents the number of times
-    // the current position is reached again duriing the current rotation.
+    // the current position is reached again during the current rotation.
     //
     uint32_t revolutions = distance / TOTAL_CLICKS;
     // The distance left without any more full rotations.
