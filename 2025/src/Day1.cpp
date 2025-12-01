@@ -46,7 +46,7 @@ std::pair<std::string, std::string> Day1::solveImplementation() {
     zero_crossings += revolutions;
 
     //
-    // Event though clicks has been bounded to be within TOTAL_CLICKS. A
+    // Even though clicks has been bounded to be within TOTAL_CLICKS. A
     // rotation may still involve a zero crossing depenging on the current
     // position.
     //
