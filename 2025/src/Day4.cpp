@@ -60,8 +60,8 @@ std::pair<std::string, std::string> Day4::solveImplementation() {
   // Read input using the base class utility
   std::vector<std::string> grid = getInputLines();
 
-  for (int32_t row = 0; row < grid.size(); row++) {
-    for (int32_t col = 0; col < grid[0].length(); col++) {
+  for (size_t row = 0; row < grid.size(); row++) {
+    for (size_t col = 0; col < grid[0].length(); col++) {
 
       if (grid[row][col] != '@') {
         // If current position is not a roll, the we can skip it.
