@@ -64,7 +64,7 @@ std::pair<std::string, std::string> Day4::solveImplementation() {
     for (size_t col = 0; col < grid[0].length(); col++) {
 
       if (grid[row][col] != '@') {
-        // If current position is not a roll, the we can skip it.
+        // If current position is not a roll, then we can skip it.
         continue;
       }
 
