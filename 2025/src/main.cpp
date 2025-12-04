@@ -1,17 +1,19 @@
-#include "DayX.hpp"
 #include <CLI/CLI.hpp>
+#include <DayX.hpp>
 #include <cstdint>
 #include <iostream>
 #include <memory>
 #include <string>
-
-#include <Day1.hpp>
 
 std::unique_ptr<DayX> getDayInstance(uint32_t day,
                                      const std::string &input_file) {
   switch (day) {
   case 1:
     return std::make_unique<Day1>(input_file);
+  case 2:
+    return std::make_unique<Day2>(input_file);
+  case 3:
+    return std::make_unique<Day3>(input_file);
   default:
     throw std::runtime_error("Day not implemented");
   }
