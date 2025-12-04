@@ -75,7 +75,6 @@ std::pair<std::string, std::string> Day3::solveImplementation() {
   std::vector<std::string> banks = getInputLines();
 
   for (auto const &bank : banks) {
-    printf("Testing %s\n", bank.c_str());
     part_1 += largestJolt(bank, 2);
     part_2 += largestJolt(bank, 12);
   }
