@@ -7,20 +7,6 @@
 #include <string>
 #include <vector>
 
-void printVector(const std::vector<uint32_t> &vec, std::string bank) {
-  for (size_t i = 0; i < vec.size(); ++i) {
-    printf("%u", bank[vec[i]] - '0');
-    if (i < vec.size() - 1)
-      printf(", ");
-  }
-  printf("\n");
-}
-//       l
-// 0 1 2 3 4 5 6 7 8 9 A B C
-// 8 1 8 1 8 1 9 1 1 1 1 2 1 1 1
-// 0 1 2 3 4 5 6 7 8 9 A B C
-// 0   1 2 3 4 5 6 7 8 9 A B C
-//
 // Given a bank (i.e. string representing a list of digits, each digit
 // corresponding to the joltage of a single battery). Find the largest jolt
 // possible. Where a jolt is the combination of N battery jolts in order.
@@ -68,12 +54,9 @@ uint64_t Day3::largestJolt(std::string bank, uint32_t battery_count) {
         break;
       }
     }
-    // printf("Current Digit: %u\n", current_digit);
-    // printVector(joltsPosition, bank);
     current_battery_idx++;
   }
 
-  printVector(joltsPosition, bank);
   // Calculate the largest jolt from the selected batteries.
   uint64_t max_jolts = 0;
   uint32_t idx = 0;

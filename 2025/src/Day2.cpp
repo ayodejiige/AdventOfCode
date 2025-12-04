@@ -4,7 +4,6 @@
 #include <DayX.hpp>
 #include <cmath>
 #include <cstdint>
-#include <cstdio>
 #include <set>
 #include <string>
 #include <vector>
