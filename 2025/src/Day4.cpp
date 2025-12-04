@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-// Returns true if a the roll in the given row and col in the grid can be
+// Returns true if the roll in the given row and col in the grid can be
 // removed. A roll can be removed if there are less than 4 neighboring rolls
 // around it.
 bool Day4::canBeRemoved(const std::vector<std::string> &grid, int32_t row,
