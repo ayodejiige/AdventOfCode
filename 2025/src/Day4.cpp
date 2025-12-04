@@ -2,6 +2,7 @@
 // https://adventofcode.com/2025/day/4
 
 #include <DayX.hpp>
+#include <cstddef>
 #include <cstdint>
 #include <map>
 #include <set>
@@ -12,8 +13,8 @@
 // Returns true if the roll in the given row and col in the grid can be
 // removed. A roll can be removed if there are less than 4 neighboring rolls
 // around it.
-bool Day4::canBeRemoved(const std::vector<std::string> &grid, int32_t row,
-                        int32_t col, std::set<position> &neighbors) {
+bool Day4::canBeRemoved(const std::vector<std::string> &grid, size_t row,
+                        size_t col, std::set<position> &neighbors) {
   static const std::vector<position> DIRECTIONS = {
       {-1, -1}, // Top-left
       {-1, 0},  // Top
@@ -25,8 +26,8 @@ bool Day4::canBeRemoved(const std::vector<std::string> &grid, int32_t row,
       {1, 1}    // Bottom-right
   };
 
-  int32_t row_max = grid.size();
-  int32_t col_max = grid[0].size();
+  size_t row_max = grid.size();
+  size_t col_max = grid[0].size();
 
   uint32_t roll_count = 0;
 
@@ -69,8 +70,7 @@ std::pair<std::string, std::string> Day4::solveImplementation() {
       }
 
       // Tracks the rolls around the current position
-      std::set<std::pair<int32_t, int32_t>> neighbors;
-
+      std::set<position> neighbors;
       if (canBeRemoved(grid, row, col, neighbors)) {
         removed_rolls[{row, col}] = neighbors;
         part1_count++;

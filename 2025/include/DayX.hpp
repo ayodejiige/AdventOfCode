@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <cstdint>
 #include <set>
 #include <string>
@@ -60,11 +61,12 @@ protected:
 };
 
 class Day4 : public DayX {
-  using position = std::pair<int32_t, int32_t>;
+  using position = std::pair<size_t, size_t>;
+
 private:
   using DayX::DayX;
-  bool canBeRemoved(const std::vector<std::string> &grid, int32_t row,
-                    int32_t col, std::set<position> &neighbors);
+  bool canBeRemoved(const std::vector<std::string> &grid, size_t row,
+                    size_t col, std::set<position> &neighbors);
 
 protected:
   std::pair<std::string, std::string> solveImplementation() override;
