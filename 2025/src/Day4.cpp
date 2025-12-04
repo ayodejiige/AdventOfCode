@@ -38,7 +38,7 @@ bool Day4::canBeRemoved(const std::vector<std::string> &grid, int32_t row,
 
     if (new_row < 0 || new_row >= row_max || new_col < 0 ||
         new_col >= col_max) {
-      // Adjacent position is our of bounds.
+      // Adjacent position is out of bounds.
       continue;
     }
 
