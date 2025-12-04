@@ -12,7 +12,7 @@
 // possible. Where a jolt is the combination of N battery jolts in order.
 //
 // e.g. N: 2, Bank: 1 2 3 8 0 9 0 1, Largest Jolt: 91
-uint64_t Day3::largestJolt(std::string bank, uint32_t battery_count) {
+uint64_t Day3::largestJolt(const std::string &bank, uint32_t battery_count) {
   if (bank.length() < battery_count) {
     return std::stoi(bank);
   }
