@@ -14,6 +14,8 @@ std::unique_ptr<DayX> getDayInstance(uint32_t day,
     return std::make_unique<Day2>(input_file);
   case 3:
     return std::make_unique<Day3>(input_file);
+  case 4:
+    return std::make_unique<Day4>(input_file);
   default:
     throw std::runtime_error("Day not implemented");
   }
