@@ -71,7 +71,7 @@ std::pair<std::string, std::string> Day4::solveImplementation() {
       // Tracks the rolls around the current position
       std::set<std::pair<int32_t, int32_t>> neighbors;
 
-      if (canBeRemoved(grid, row, col, neighbors) == true) {
+      if (canBeRemoved(grid, row, col, neighbors)) {
         removed_rolls[{row, col}] = neighbors;
         part1_count++;
       } else {
