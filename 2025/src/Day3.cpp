@@ -23,7 +23,6 @@ uint64_t Day3::largestJolt(std::string bank, uint32_t battery_count) {
     joltsPosition.push_back(idx);
   }
 
-  //   printVector(joltsPosition, bank);
   // Iterate through the bank starting from the (N+1)th battery.
   uint32_t current_battery_idx = 1;
   while (current_battery_idx < bank.length()) {
