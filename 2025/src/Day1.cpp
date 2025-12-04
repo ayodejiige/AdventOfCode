@@ -1,11 +1,9 @@
-// Day 1: Historian Hysteria
+// Day 1: Secret Entrance
 // https://adventofcode.com/2025/day/1
 
-#include <Day1.hpp>
+#include <DayX.hpp>
 #include <cstdint>
-#include <cstdio>
 #include <string>
-#include <sys/types.h>
 
 std::pair<std::string, std::string> Day1::solveImplementation() {
   // The dial has 100 clicks on it. A full rotation is 100.
@@ -23,7 +21,7 @@ std::pair<std::string, std::string> Day1::solveImplementation() {
   std::string part1_result = "Part 1 not implemented";
   std::string part2_result = "Part 2 not implemented";
 
-  for (const auto& line : lines) {
+  for (const auto &line : lines) {
     // Each line of format R{distance} or L{distance} e.g. R64
     //
     // distance represent the number of clicks to move on the dial to the next
@@ -79,10 +77,8 @@ std::pair<std::string, std::string> Day1::solveImplementation() {
     }
   }
 
-  if (!lines.empty()) {
-    part1_result = std::to_string(final_zero_positions);
-    part2_result = std::to_string(zero_crossings);
-  }
+  part1_result = std::to_string(final_zero_positions);
+  part2_result = std::to_string(zero_crossings);
 
   return std::make_pair(part1_result, part2_result);
 }

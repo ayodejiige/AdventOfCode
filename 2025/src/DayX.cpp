@@ -1,7 +1,9 @@
 #include <DayX.hpp>
 #include <fstream>
+#include <sstream>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 std::vector<std::string> DayX::getInputLines() {
   std::vector<std::string> lines;
@@ -17,4 +19,17 @@ std::vector<std::string> DayX::getInputLines() {
   }
 
   return lines;
+}
+
+std::vector<std::string> DayX::splitString(const std::string &input,
+                                           char delimiter) {
+  std::vector<std::string> tokens;
+  std::istringstream input_stream(input);
+  std::string token;
+
+  while (std::getline(input_stream, token, delimiter)) {
+    tokens.push_back(token);
+  }
+
+  return tokens;
 }
