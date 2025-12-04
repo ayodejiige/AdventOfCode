@@ -52,7 +52,7 @@ protected:
 class Day3 : public DayX {
 private:
   using DayX::DayX;
-  uint64_t largestJolt(std::string bank, uint32_t battery_count);
+  uint64_t largestJolt(const std::string &bank, uint32_t battery_count);
 
 protected:
   std::pair<std::string, std::string> solveImplementation() override;
