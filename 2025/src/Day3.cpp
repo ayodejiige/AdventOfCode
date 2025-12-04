@@ -18,9 +18,9 @@ uint64_t Day3::largestJolt(const std::string &bank, uint32_t battery_count) {
   }
 
   // Populate the initial jolts with the first N batteries.
-  std::vector<uint32_t> joltsPosition;
+  std::vector<uint32_t> jolts_position;
   for (uint32_t idx = 0; idx < battery_count; idx++) {
-    joltsPosition.push_back(idx);
+    jolts_position.push_back(idx);
   }
 
   // Iterate through the bank starting from the (N+1)th battery.
@@ -30,24 +30,24 @@ uint64_t Day3::largestJolt(const std::string &bank, uint32_t battery_count) {
 
     // Check if the current digit can replace any of the existing jolts.
     for (uint32_t idx = 0; idx < current_battery_idx; idx++) {
-      if (bank.length() - current_battery_idx < joltsPosition.size() - idx) {
+      if (bank.length() - current_battery_idx < jolts_position.size() - idx) {
         // Skip this index when there are not enough batteries left to update
         // the idx and the subsequent ones.
         continue;
       }
 
-      if (joltsPosition[idx] > current_battery_idx) {
+      if (jolts_position[idx] > current_battery_idx) {
         // idx is out of range of current batteries being considered.
         break;
       }
 
-      if (current_digit > bank[joltsPosition[idx]] - '0') {
+      if (current_digit > bank[jolts_position[idx]] - '0') {
         // Replace the jolt at idx with the current digit.
-        joltsPosition[idx] = current_battery_idx;
+        jolts_position[idx] = current_battery_idx;
 
         // Update all subsequent jolts with the next batteries in the bank.
-        for (uint32_t j = idx + 1; j < joltsPosition.size(); j++) {
-          joltsPosition[j] = current_battery_idx + (j - idx);
+        for (uint32_t j = idx + 1; j < jolts_position.size(); j++) {
+          jolts_position[j] = current_battery_idx + (j - idx);
         }
 
         break;
@@ -59,7 +59,7 @@ uint64_t Day3::largestJolt(const std::string &bank, uint32_t battery_count) {
   // Calculate the largest jolt from the selected batteries.
   uint64_t max_jolts = 0;
   uint32_t idx = 0;
-  for (auto it = joltsPosition.rbegin(); it != joltsPosition.rend(); ++it) {
+  for (auto it = jolts_position.rbegin(); it != jolts_position.rend(); ++it) {
     max_jolts += (bank[*it] - '0') * std::pow(10, idx);
     idx++;
   }
