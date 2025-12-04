@@ -60,8 +60,8 @@ protected:
 };
 
 class Day4 : public DayX {
-private:
   using position = std::pair<int32_t, int32_t>;
+private:
   using DayX::DayX;
   bool canBeRemoved(const std::vector<std::string> &grid, int32_t row,
                     int32_t col, std::set<position> &neighbors);
