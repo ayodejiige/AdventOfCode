@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <set>
 #include <string>
 #include <utility>
 #include <vector>
@@ -53,6 +54,17 @@ class Day3 : public DayX {
 private:
   using DayX::DayX;
   uint64_t largestJolt(const std::string &bank, uint32_t battery_count);
+
+protected:
+  std::pair<std::string, std::string> solveImplementation() override;
+};
+
+class Day4 : public DayX {
+private:
+  using position = std::pair<int32_t, int32_t>;
+  using DayX::DayX;
+  bool canBeRemoved(const std::vector<std::string> &grid, int32_t row,
+                    int32_t col, std::set<position> &neighbors);
 
 protected:
   std::pair<std::string, std::string> solveImplementation() override;
