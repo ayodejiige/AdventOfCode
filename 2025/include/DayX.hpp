@@ -71,3 +71,13 @@ private:
 protected:
   std::pair<std::string, std::string> solveImplementation() override;
 };
+
+class Day5 : public DayX {
+  using range = std::pair<uint64_t, uint64_t>;
+
+private:
+  using DayX::DayX;
+
+protected:
+  std::pair<std::string, std::string> solveImplementation() override;
+};
