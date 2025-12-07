@@ -52,7 +52,7 @@ bool Day4::canBeRemoved(const std::vector<std::string> &grid, size_t row,
   return roll_count < 4;
 }
 
-std::pair<std::string, std::string> Day4::solveImplementation() {
+std::pair<uint64_t, uint64_t> Day4::solveImplementation() {
   uint32_t part1_count = 0;
   uint32_t part2_count = 0;
   std::map<position, std::set<position>> removed_rolls;
@@ -115,8 +115,5 @@ std::pair<std::string, std::string> Day4::solveImplementation() {
     }
   }
 
-  std::string part1_result = std::to_string(part1_count);
-  std::string part2_result = std::to_string(part2_count);
-
-  return {part1_result, part2_result};
+  return {part1_count, part2_count};
 }

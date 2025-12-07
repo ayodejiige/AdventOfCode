@@ -66,7 +66,7 @@ uint64_t Day3::largestJolt(const std::string &bank, uint32_t battery_count) {
   return max_jolts;
 }
 
-std::pair<std::string, std::string> Day3::solveImplementation() {
+std::pair<uint64_t, uint64_t> Day3::solveImplementation() {
   uint64_t part_1 = 0;
   uint64_t part_2 = 0;
 
@@ -78,8 +78,5 @@ std::pair<std::string, std::string> Day3::solveImplementation() {
     part_2 += largestJolt(bank, 12);
   }
 
-  std::string part1_result = std::to_string(part_1);
-  std::string part2_result = std::to_string(part_2);
-
-  return std::make_pair(part1_result, part2_result);
+  return {part_1, part_2};
 }

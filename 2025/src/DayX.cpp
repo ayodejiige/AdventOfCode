@@ -1,8 +1,11 @@
 #include <DayX.hpp>
+#include <cctype>
+#include <cstdint>
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 std::vector<std::string> DayX::getInputLines() {
@@ -21,15 +24,42 @@ std::vector<std::string> DayX::getInputLines() {
   return lines;
 }
 
-std::vector<std::string> DayX::splitString(const std::string &input,
-                                           char delimiter) {
-  std::vector<std::string> tokens;
+template <typename T>
+std::vector<T> DayX::splitString(const std::string &input, char delimiter) {
+  std::vector<T> tokens;
   std::istringstream input_stream(input);
   std::string token;
 
   while (std::getline(input_stream, token, delimiter)) {
-    tokens.push_back(token);
-  }
+    // Trim white space
+    token.erase(std::remove_if(token.begin(), token.end(),
+                               [](char c) { return std::isspace(c); }),
+                token.end());
 
+    // Skip empty value after whitespace trimming.
+    if (token == "") {
+      continue;
+    }
+
+    if constexpr (std::is_same_v<T, std::string>) {
+      tokens.push_back(token);
+    } else if constexpr (std::is_same_v<T, char>) {
+      tokens.push_back(token[0]);
+    } else if constexpr (std::is_integral_v<T>) {
+      if constexpr (std::is_signed_v<T>) {
+        tokens.push_back(static_cast<T>(std::stoll(token)));
+      } else {
+        tokens.push_back(static_cast<T>(std::stoull(token)));
+      }
+    } else {
+      static_assert(false, "Unsupported type for splitString");
+    }
+  }
   return tokens;
 }
+
+template std::vector<std::string>
+DayX::splitString<std::string>(const std::string &, char);
+template std::vector<char> DayX::splitString<char>(const std::string &, char);
+template std::vector<uint64_t> DayX::splitString<uint64_t>(const std::string &,
+                                                           char);

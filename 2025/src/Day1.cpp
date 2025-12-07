@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <string>
 
-std::pair<std::string, std::string> Day1::solveImplementation() {
+std::pair<uint64_t, uint64_t> Day1::solveImplementation() {
   // The dial has 100 clicks on it. A full rotation is 100.
   const uint32_t TOTAL_CLICKS = 100;
   uint32_t position = 50;
@@ -77,8 +77,5 @@ std::pair<std::string, std::string> Day1::solveImplementation() {
     }
   }
 
-  part1_result = std::to_string(final_zero_positions);
-  part2_result = std::to_string(zero_crossings);
-
-  return std::make_pair(part1_result, part2_result);
+  return {final_zero_positions, zero_crossings};
 }
