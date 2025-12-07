@@ -82,19 +82,19 @@ std::pair<uint64_t, uint64_t> Day2::repeatedSums(uint64_t start, uint64_t end) {
   return std::make_pair(twice_repeated_sum, any_repeated_sum);
 }
 
-std::pair<std::string, std::string> Day2::solveImplementation() {
+std::pair<uint64_t, uint64_t> Day2::solveImplementation() {
   uint64_t twice_repeated_sums = 0;
   uint64_t any_repeated_sums = 0;
 
   // Read input using the base class utility
   std::vector<std::string> lines = getInputLines();
 
-  std::vector<std::string> ranges = splitString(lines[0], ',');
+  std::vector<std::string> ranges = splitString<std::string>(lines[0], ',');
 
   for (const auto &range : ranges) {
-    std::vector<std::string> range_pair = splitString(range, '-');
-    uint64_t start = std::stol(range_pair[0]);
-    uint64_t end = std::stol(range_pair[1]);
+    std::vector<uint64_t> range_pair = splitString<uint64_t>(range, '-');
+    uint64_t start = range_pair[0];
+    uint64_t end = range_pair[1];
 
     auto [double_sequence_sum, any_repeated_sum] = repeatedSums(start, end);
 
@@ -102,8 +102,5 @@ std::pair<std::string, std::string> Day2::solveImplementation() {
     any_repeated_sums += any_repeated_sum;
   }
 
-  std::string part1_result = std::to_string(twice_repeated_sums);
-  std::string part2_result = std::to_string(any_repeated_sums);
-
-  return std::make_pair(part1_result, part2_result);
+  return {twice_repeated_sums, any_repeated_sums};
 }

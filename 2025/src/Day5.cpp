@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-std::pair<std::string, std::string> Day5::solveImplementation() {
+std::pair<uint64_t, uint64_t> Day5::solveImplementation() {
   std::vector<std::string> lines = getInputLines();
 
   // Count of IDs that fall within any range
@@ -24,8 +24,8 @@ std::pair<std::string, std::string> Day5::solveImplementation() {
   // Input format: each line contains "start-end" (e.g., "10-20")
   auto it_input = lines.begin();
   while (*it_input != "") {
-    std::vector<std::string> parts = splitString(*it_input++, '-');
-    range r = {std::stoll(parts[0]), std::stoll(parts[1])};
+    std::vector<uint64_t> parts = splitString<uint64_t>(*it_input++, '-');
+    range r = {parts[0], parts[1]};
     ranges.push_back(r);
   }
 
@@ -76,8 +76,5 @@ std::pair<std::string, std::string> Day5::solveImplementation() {
     }
   }
 
-  std::string part1_result = std::to_string(in_range_count);
-  std::string part2_result = std::to_string(range_size);
-
-  return {part1_result, part2_result};
+  return {in_range_count, range_size};
 }
