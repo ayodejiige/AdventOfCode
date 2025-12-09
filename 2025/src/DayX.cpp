@@ -62,3 +62,24 @@ DayX::splitString<std::string>(const std::string &, char);
 template std::vector<char> DayX::splitString<char>(const std::string &, char);
 template std::vector<uint64_t> DayX::splitString<uint64_t>(const std::string &,
                                                            char);
+template std::vector<int64_t> DayX::splitString<int64_t>(const std::string &,
+                                                         char);
+
+double Position3D::distance(const Position3D &other) const {
+  int64_t x_diff = x - other.x;
+  int64_t y_diff = y - other.y;
+  int64_t z_diff = z - other.z;
+
+  return std::sqrt(x_diff * x_diff + y_diff * y_diff + z_diff * z_diff);
+}
+
+bool Position3D::operator<(const Position3D &other) const {
+  Position3D zero = {0, 0, 0};
+  return this->distance(zero) < other.distance(zero);
+}
+
+std::ostream &operator<<(std::ostream &os, const Position3D &position) {
+  os << "{" << position.x << "," << position.y << "," << position.z;
+
+  return os << "}";
+}

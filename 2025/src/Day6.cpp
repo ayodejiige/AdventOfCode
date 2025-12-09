@@ -2,7 +2,6 @@
 // https://adventofcode.com/2025/day/6
 
 #include <DayX.hpp>
-#include <DebugUtils.hpp>
 #include <cstdint>
 #include <stdexcept>
 #include <string>

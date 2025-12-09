@@ -23,6 +23,8 @@ std::unique_ptr<DayX> getDayInstance(uint32_t day,
     return std::make_unique<Day6>(input_file);
   case 7:
     return std::make_unique<Day7>(input_file);
+  case 8:
+    return std::make_unique<Day8>(input_file);
   default:
     throw std::runtime_error("Day not implemented");
   }
@@ -55,8 +57,7 @@ int main(int argc, char **argv) {
     std::cout << "=== Day " << day << " ===" << std::endl;
     std::cout << "Part 1: " << day_x->part1() << std::endl;
     std::cout << "Part 2: " << day_x->part2() << std::endl;
-    std::cout << "Execution time: " << duration.count() / 1000.0 << " ms"
-              << std::endl;
+    std::cout << "Execution time: " << duration.count() << " ms" << std::endl;
   } catch (const std::exception &e) {
     std::cerr << "Error: " << e.what() << std::endl;
     return 1;
