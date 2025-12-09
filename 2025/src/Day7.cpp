@@ -2,7 +2,6 @@
 // https://adventofcode.com/2025/day/7
 
 #include <DayX.hpp>
-#include <DebugUtils.hpp>
 #include <cstdint>
 #include <map>
 #include <queue>

@@ -2,6 +2,8 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <iostream>
+#include <list>
 #include <map>
 #include <queue>
 #include <set>
@@ -103,3 +105,61 @@ private:
 public:
   std::pair<uint64_t, uint64_t> solveImplementation() override;
 };
+
+class Day8 : public DayX {
+private:
+  using DayX::DayX;
+
+public:
+  std::pair<uint64_t, uint64_t> solveImplementation() override;
+};
+
+// Utilities
+
+// Pair printing
+template <typename T1, typename T2>
+std::ostream &operator<<(std::ostream &os, const std::pair<T1, T2> &p) {
+  return os << "(" << p.first << "," << p.second << ")";
+}
+
+template <typename T> struct is_container : std::false_type {};
+template <typename T> struct is_container<std::vector<T>> : std::true_type {};
+template <typename T> struct is_container<std::set<T>> : std::true_type {};
+template <typename T> struct is_container<std::list<T>> : std::true_type {};
+
+// Container printing
+template <typename Container>
+typename std::enable_if<is_container<Container>::value, std::ostream &>::type
+operator<<(std::ostream &os, const Container &container) {
+  os << "[";
+  bool first = true;
+  for (const auto &item : container) {
+    if (!first)
+      os << ", ";
+    os << item;
+    first = false;
+  }
+  return os << "]";
+}
+
+// Map printing
+template <typename K, typename V>
+std::ostream &operator<<(std::ostream &os, const std::map<K, V> &map) {
+  os << "{";
+  bool first = true;
+  for (const auto &[key, value] : map) {
+    if (!first)
+      os << ", ";
+    os << key << ": " << value;
+    first = false;
+  }
+  return os << "}";
+}
+
+struct Position3D {
+  int64_t x, y, z;
+  bool operator<(const Position3D &other) const;
+  double distance(const Position3D &other) const;
+};
+
+std::ostream &operator<<(std::ostream &os, const Position3D &position);
