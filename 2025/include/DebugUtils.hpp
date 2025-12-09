@@ -1,5 +1,6 @@
 // Debugging Utilities
 #include <iostream>
+#include <map>
 
 // Pair printing
 template <typename T1, typename T2>
@@ -23,4 +24,18 @@ operator<<(std::ostream &os, const Container &container) {
     first = false;
   }
   return os << "]";
+}
+
+// Map printing
+template <typename K, typename V>
+std::ostream &operator<<(std::ostream &os, const std::map<K, V> &map) {
+  os << "{";
+  bool first = true;
+  for (const auto &[key, value] : map) {
+    if (!first)
+      os << ", ";
+    os << key << ": " << value;
+    first = false;
+  }
+  return os << "}";
 }

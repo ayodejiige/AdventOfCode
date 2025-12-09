@@ -16,7 +16,7 @@ std::pair<uint64_t, uint64_t> Day1::solveImplementation() {
   uint32_t final_zero_positions = 0;
 
   // Read input using the base class utility
-  auto lines = getInputLines();
+  std::vector<std::string> lines = getInputLines();
 
   std::string part1_result = "Part 1 not implemented";
   std::string part2_result = "Part 2 not implemented";

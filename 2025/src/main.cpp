@@ -1,5 +1,6 @@
 #include <CLI/CLI.hpp>
 #include <DayX.hpp>
+#include <chrono>
 #include <cstdint>
 #include <iostream>
 #include <memory>
@@ -20,6 +21,8 @@ std::unique_ptr<DayX> getDayInstance(uint32_t day,
     return std::make_unique<Day5>(input_file);
   case 6:
     return std::make_unique<Day6>(input_file);
+  case 7:
+    return std::make_unique<Day7>(input_file);
   default:
     throw std::runtime_error("Day not implemented");
   }
@@ -43,11 +46,17 @@ int main(int argc, char **argv) {
 
   try {
     auto day_x = getDayInstance(day, input_file);
+
+    auto start_time = std::chrono::high_resolution_clock::now();
     day_x->solve();
+    auto end_time = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> duration = end_time - start_time;
 
     std::cout << "=== Day " << day << " ===" << std::endl;
     std::cout << "Part 1: " << day_x->part1() << std::endl;
     std::cout << "Part 2: " << day_x->part2() << std::endl;
+    std::cout << "Execution time: " << duration.count() / 1000.0 << " ms"
+              << std::endl;
   } catch (const std::exception &e) {
     std::cerr << "Error: " << e.what() << std::endl;
     return 1;
