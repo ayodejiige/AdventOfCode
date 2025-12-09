@@ -1,6 +1,5 @@
 #include <DayX.hpp>
 #include <cctype>
-#include <cstdint>
 #include <fstream>
 #include <sstream>
 #include <stdexcept>

@@ -2,6 +2,8 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <map>
+#include <queue>
 #include <set>
 #include <string>
 #include <utility>
@@ -14,6 +16,7 @@ private:
   std::string m_InputFile;
 
 protected:
+  using position = std::pair<int64_t, int64_t>;
   virtual std::pair<uint64_t, uint64_t> solveImplementation() = 0;
 
   std::vector<std::string> getInputLines();
@@ -62,8 +65,6 @@ protected:
 };
 
 class Day4 : public DayX {
-  using position = std::pair<size_t, size_t>;
-
 private:
   using DayX::DayX;
   bool canBeRemoved(const std::vector<std::string> &grid, size_t row,
@@ -88,5 +89,17 @@ private:
   using DayX::DayX;
 
 protected:
+  std::pair<uint64_t, uint64_t> solveImplementation() override;
+};
+
+class Day7 : public DayX {
+private:
+  using DayX::DayX;
+
+  void continueBeam(position old_position, position new_postion,
+                    std::map<position, uint64_t> &visited,
+                    std::queue<position> &beams);
+
+public:
   std::pair<uint64_t, uint64_t> solveImplementation() override;
 };
